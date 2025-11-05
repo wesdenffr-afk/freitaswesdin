@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import blazeNewLogo from "@/assets/blaze-new-logo.jpg";
 import logoBranco from "@/assets/logo-branco.webp";
+import logoBlazeCircular from "@/assets/logo-blaze-circular.jpg";
 import HackerBackground from "@/components/HackerBackground";
 import ResultsDisplay from "@/components/ResultsDisplay";
 
@@ -116,7 +117,18 @@ const EstrategiaBranco = () => {
             {/* Main Card */}
             <div className="bg-[#3a3d4a]/90 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-2xl">
               {/* Entrada Confirmada Header */}
-              <h2 className="text-center text-xl font-bold text-white/90 mb-6">Entrada Confirmada</h2>
+              <h2 className="text-center text-xl font-bold text-white/90 mb-4">Entrada Confirmada</h2>
+
+              {/* Logo Circular Central */}
+              <div className="flex justify-center mb-6">
+                <div className="relative w-32 h-32">
+                  <img 
+                    src={logoBlazeCircular} 
+                    alt="Blaze" 
+                    className="w-full h-full rounded-full object-cover shadow-2xl ring-4 ring-red-500/30" 
+                  />
+                </div>
+              </div>
 
               {/* Three Column Layout */}
               <div className="grid grid-cols-3 gap-4 mb-6">
