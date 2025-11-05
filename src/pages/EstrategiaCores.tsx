@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import blazeNewLogo from "@/assets/blaze-new-logo.jpg";
+import logoBlazeCircular from "@/assets/logo-blaze-circular.jpg";
 import redCircleSignal from "@/assets/red-circle-signal.png";
 import blackCircleSignal from "@/assets/black-circle-signal.png";
 import HackerBackground from "@/components/HackerBackground";
@@ -144,38 +145,82 @@ const EstrategiaCores = () => {
           </button>
         </div>
 
-        {/* Aguardando Section */}
-        <div className="mt-4 mx-4 p-6 bg-[#2a2d3a] rounded-2xl">
-          <h2 className="text-center text-2xl font-bold text-gray-300 mb-3">
-            {recommendedColor ? (recommendedColor === '🔴' ? 'Entrar no Vermelho' : 'Entrar no Preto') : 'Aguardando'}
-          </h2>
-          <p className="text-center text-gray-400 text-sm">
-            <span className="text-white font-bold">{peopleCount}</span> Pessoas Fizeram Entrada!
-          </p>
-        </div>
+        {/* Entry Status Section */}
+        {recommendedColor && (
+          <div className="mt-6 mx-4">
+            {/* Main Card */}
+            <div className="bg-[#3a3d4a]/90 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-2xl">
+              {/* Entrada Confirmada Header */}
+              <h2 className="text-center text-xl font-bold text-white/90 mb-4">Entrada Confirmada</h2>
+
+              {/* Logo Circular Central */}
+              <div className="flex justify-center mb-6">
+                <div className="relative w-32 h-32">
+                  <img 
+                    src={logoBlazeCircular} 
+                    alt="Blaze" 
+                    className="w-full h-full rounded-full object-cover shadow-2xl ring-4 ring-red-500/30" 
+                  />
+                </div>
+              </div>
+
+              {/* Three Column Layout */}
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                {/* Gales - Left */}
+                <div className="bg-[#2a2d3a]/60 rounded-2xl p-4 flex flex-col items-center justify-center">
+                  <p className="text-xs text-white/60 font-medium mb-2">Gales</p>
+                  <p className="text-5xl font-black text-white tabular-nums">0</p>
+                </div>
+
+                {/* Logo Center - Color Signal */}
+                <div className="bg-white rounded-2xl p-4 flex items-center justify-center">
+                  <img 
+                    src={recommendedColor === '🔴' ? redCircleSignal : blackCircleSignal} 
+                    alt={recommendedColor === '🔴' ? 'Vermelho' : 'Preto'} 
+                    className="w-20 h-20 object-contain" 
+                  />
+                </div>
+
+                {/* Entrada - Right */}
+                <div className="bg-[#2a2d3a]/60 rounded-2xl p-4 flex flex-col items-center justify-center">
+                  <p className="text-xs text-white/60 font-medium mb-2">Entrada</p>
+                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+                    <img 
+                      src={recommendedColor === '🔴' ? redCircleSignal : blackCircleSignal} 
+                      alt="Entrada" 
+                      className="w-10 h-10 object-contain" 
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Pessoas Fizeram Entrada */}
+              <p className="text-center text-base text-white/80 font-medium">
+                <span className="text-white font-bold">{peopleCount}</span> Pessoas Fizeram Entrada!
+              </p>
+            </div>
+          </div>
+        )}
+
+        {!recommendedColor && (
+          <div className="mt-4 mx-4 p-6 bg-[#2a2d3a] rounded-2xl">
+            <h2 className="text-center text-2xl font-bold text-gray-300 mb-3">
+              Aguardando
+            </h2>
+            <p className="text-center text-gray-400 text-sm">
+              <span className="text-white font-bold">0</span> Pessoas Fizeram Entrada!
+            </p>
+          </div>
+        )}
 
         {/* Center Signal Area */}
         <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
           {recommendedColor ? (
             <div className="space-y-6 w-full max-w-sm">
-              {/* Color Signal Display */}
-              <div className="flex justify-center">
-                <div className="relative w-48 h-48">
-                  <div className="relative w-48 h-48 flex items-center justify-center">
-                    <img 
-                      src={recommendedColor === '🔴' ? redCircleSignal : blackCircleSignal} 
-                      alt={recommendedColor === '🔴' ? 'Vermelho' : 'Preto'} 
-                      className="w-full h-full object-contain" 
-                    />
-                  </div>
-                  <div className="pointer-events-none absolute -inset-1 rounded-full border-4 border-transparent animate-spin" style={{ borderTopColor: '#ef4444', borderRightColor: '#ef4444', animationDuration: '2.2s' }} />
-                </div>
-              </div>
-              
               {/* Assertiveness */}
               <div className="text-center space-y-2">
                 <h3 className="text-xl font-bold text-white">Assertividade {assertiveness}%</h3>
-                <p className="text-sm text-gray-400">Não precisa fazer Gale</p>
+                <p className="text-sm text-gray-400">Proteção Gale Inclusa</p>
               </div>
             </div>
           ) : (
