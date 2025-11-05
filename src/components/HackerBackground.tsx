@@ -1,11 +1,10 @@
 import { useEffect, useRef } from 'react';
 
-interface Particle {
+interface MatrixColumn {
   x: number;
   y: number;
   speed: number;
-  opacity: number;
-  size: number;
+  characters: string[];
 }
 
 const HackerBackground = () => {
@@ -26,37 +25,62 @@ const HackerBackground = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Create particles
-    const particles: Particle[] = [];
-    const particleCount = 50;
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
+    // Matrix characters
+    const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    
+    // Create columns
+    const matrixColumns: MatrixColumn[] = [];
+    for (let i = 0; i < columns; i++) {
+      matrixColumns.push({
+        x: i * fontSize,
         y: Math.random() * canvas.height - canvas.height,
-        speed: Math.random() * 3 + 2,
-        opacity: Math.random() * 0.5 + 0.3,
-        size: Math.random() * 3 + 2,
+        speed: Math.random() * 2 + 1,
+        characters: []
       });
+      
+      // Initialize characters for this column
+      const charCount = Math.floor(Math.random() * 20) + 10;
+      for (let j = 0; j < charCount; j++) {
+        matrixColumns[i].characters.push(
+          characters[Math.floor(Math.random() * characters.length)]
+        );
+      }
     }
 
     // Animation loop
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Fade effect
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((particle) => {
-        ctx.fillStyle = `rgba(239, 68, 68, ${particle.opacity})`;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fill();
+      matrixColumns.forEach((column) => {
+        column.characters.forEach((char, index) => {
+          // Calculate opacity - brighter at the bottom of the trail
+          const opacity = (index + 1) / column.characters.length;
+          
+          // Red color with varying opacity
+          ctx.fillStyle = `rgba(239, 68, 68, ${opacity})`;
+          ctx.font = `${fontSize}px monospace`;
+          
+          // Draw character
+          const yPos = column.y + (index * fontSize);
+          ctx.fillText(char, column.x, yPos);
+          
+          // Randomly change characters
+          if (Math.random() > 0.95) {
+            column.characters[index] = characters[Math.floor(Math.random() * characters.length)];
+          }
+        });
 
         // Update position
-        particle.y += particle.speed;
+        column.y += column.speed;
 
-        // Reset particle if it goes off screen
-        if (particle.y > canvas.height) {
-          particle.y = -10;
-          particle.x = Math.random() * canvas.width;
+        // Reset column if it goes off screen
+        if (column.y - (column.characters.length * fontSize) > canvas.height) {
+          column.y = -fontSize;
+          column.speed = Math.random() * 2 + 1;
         }
       });
 
@@ -71,22 +95,11 @@ const HackerBackground = () => {
   }, []);
 
   return (
-    <>
-      {/* Static dots pattern */}
-      <div 
-        className="absolute inset-0 opacity-20 pointer-events-none" 
-        style={{
-          backgroundImage: 'radial-gradient(circle, #ef4444 1.5px, transparent 1.5px)',
-          backgroundSize: '30px 30px'
-        }}
-      />
-      {/* Falling particles canvas */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 pointer-events-none"
-        style={{ opacity: 0.6 }}
-      />
-    </>
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 pointer-events-none"
+      style={{ opacity: 0.8 }}
+    />
   );
 };
 
