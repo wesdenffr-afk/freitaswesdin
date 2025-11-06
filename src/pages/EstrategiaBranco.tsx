@@ -192,8 +192,8 @@ const EstrategiaBranco = () => {
             <div className="space-y-8 w-full max-w-sm">
               {/* Blaze Icon with animation */}
               <div className="flex justify-center">
-                <div className="relative w-64 h-64">
-                  <img src={blazeTargetLogo} alt="Blaze" className="w-full h-full object-contain" />
+                <div className="relative w-80 h-80">
+                  <img src={blazeTargetLogo} alt="Blaze" className="w-full h-full object-contain drop-shadow-2xl" />
                 </div>
               </div>
 
